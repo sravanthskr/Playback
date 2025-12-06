@@ -1,0 +1,291 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(24, 100%, 53%);
+  --primary-foreground: hsl(0, 0%, 98%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+  --radius: 0.5rem;
+
+  --vlc-orange: hsl(24, 100%, 53%);
+  --vlc-dark: hsl(0, 0%, 5%);
+  --vlc-surface: hsl(0, 0%, 10%);
+  --vlc-border: hsl(0, 0%, 20%);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    background-color: var(--vlc-dark);
+    color: var(--foreground);
+  }
+}
+
+@layer components {
+  .video-container {
+    @apply relative bg-black;
+  }
+  
+  .controls-overlay {
+    @apply absolute bottom-0 left-0 right-0 transition-opacity duration-300;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+  }
+  
+  .controls-overlay.hidden {
+    @apply opacity-0 pointer-events-none;
+  }
+  
+  .speed-indicator {
+    @apply absolute top-5 right-5 px-4 py-2 rounded-lg text-base font-bold text-white transition-all duration-200 shadow-lg;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid var(--vlc-orange);
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  
+  .speed-indicator.show {
+    @apply opacity-100;
+    transform: scale(1);
+  }
+  
+  .progress-bar {
+    @apply h-1.5 bg-gray-600 rounded-full overflow-hidden cursor-pointer;
+  }
+  
+  .progress-fill {
+    @apply h-full rounded-full transition-all duration-100;
+    background: var(--vlc-orange);
+  }
+  
+  .volume-slider {
+    @apply w-20 h-1 bg-gray-600 rounded-full outline-none cursor-pointer;
+  }
+  
+  .subtitle-overlay {
+    @apply absolute left-1/2 transform -translate-x-1/2 text-white text-xl font-medium text-center max-w-4xl leading-relaxed;
+    bottom: 80px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+  }
+  
+  .drag-drop-zone {
+    @apply border-2 border-dashed rounded-lg transition-all duration-300;
+    border-color: var(--vlc-orange);
+  }
+  
+  .drag-drop-zone.drag-over {
+    @apply bg-opacity-10;
+    background-color: var(--vlc-orange);
+  }
+  
+  .context-menu {
+    @apply absolute z-50 min-w-48 rounded border shadow-lg;
+    background: var(--vlc-surface);
+    border-color: var(--vlc-border);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  
+  .context-menu-item {
+    @apply px-3 py-2 cursor-pointer border-b transition-colors;
+    border-color: var(--vlc-border);
+  }
+  
+  .context-menu-item:hover {
+    @apply bg-gray-600;
+  }
+  
+  .context-menu-item:last-child {
+    @apply border-b-0;
+  }
+  
+  .fullscreen-mode {
+    @apply fixed top-0 left-0 w-screen h-screen z-50 bg-black;
+    cursor: none;
+  }
+  
+  .fullscreen-mode video {
+    @apply w-full h-full object-contain;
+  }
+  
+  .fullscreen-mode:hover {
+    cursor: default;
+  }
+  
+  .fullscreen-mode .controls-overlay {
+    @apply transition-opacity duration-300;
+  }
+  
+  .track-selector {
+    @apply text-sm px-2 py-1 rounded border text-white;
+    background: var(--vlc-surface);
+    border-color: var(--vlc-border);
+  }
+  
+  .track-selector:focus {
+    @apply outline-2;
+    outline-color: var(--vlc-orange);
+  }
+  
+  .vlc-button {
+    @apply transition-colors;
+    color: white;
+  }
+  
+  .vlc-button:hover {
+    color: var(--vlc-orange);
+  }
+  
+  .vlc-surface {
+    background: var(--vlc-surface);
+    border-color: var(--vlc-border);
+  }
+  
+  .vlc-orange {
+    background: var(--vlc-orange);
+  }
+  
+  .vlc-orange:hover {
+    background: hsl(24, 100%, 45%);
+  }
+  
+  /* Performance optimizations */
+  .progress-bar {
+    width: 100%;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    cursor: pointer;
+    margin-bottom: 12px;
+    transition: height 0.2s ease;
+  }
+  
+  .progress-bar:hover {
+    height: 8px;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background-color: #ff6b00;
+    border-radius: 3px;
+    transition: width 0.05s ease;
+    position: relative;
+  }
+  
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    background-color: #ff6b00;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  
+  .progress-bar:hover .progress-fill::after {
+    opacity: 1;
+  }
+  
+  .speed-indicator {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #ff6b00;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    pointer-events: none;
+    z-index: 50;
+    border: 1px solid #ff6b00;
+  }
+  
+  .speed-indicator.show {
+    opacity: 1;
+  }
+  
+  .speed-help-text {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 40;
+  }
+  
+  /* Hardware acceleration for smooth performance */
+  .video-container video,
+  .progress-fill,
+  .controls-overlay,
+  .speed-indicator {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  /* Smooth video loading */
+  .video-container video {
+    transition: opacity 0.3s ease;
+    outline: none;
+  }
+  
+  .video-container {
+    user-select: none;
+  }
+  
+  .vlc-button {
+    outline: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  
+  .vlc-button:hover {
+    transform: scale(1.05);
+  }
+  
+  .vlc-button:active {
+    transform: scale(0.95);
+  }
+}
